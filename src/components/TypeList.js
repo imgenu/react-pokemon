@@ -14,13 +14,13 @@ const TypeList = ({ setLikeStatus }) => {
   const typeHandler = (type, index) => {
     dispatch(loadSelectdType(type, favorite));
     setCurrentIndex(index);
-    setActiveColor(dataList[type].subColor);
+    setActiveColor(dataList[type].color);
     setLikeStatus(false);
   };
 
   useEffect(() => {
     if (types.length > 0) {
-      setActiveColor(dataList[types[0].name].subColor);
+      setActiveColor(dataList[types[0].name].color);
     }
   }, [types]);
 
@@ -31,13 +31,12 @@ const TypeList = ({ setLikeStatus }) => {
           .filter((type) => type.name !== "unknown")
           .map((type, index) => (
             <PokemonStyled
-              color={dataList[type.name].color}
               className={currentIndex === index ? "active" : ""}
               onClick={() => typeHandler(type.name, index)}
               key={type.id}
             >
               <img src={require(`../icons/${type.name}.png`).default} />
-              {dataList[type.name].name}
+              <p>{dataList[type.name].name}</p>
             </PokemonStyled>
           ))}
       </ul>
@@ -46,14 +45,16 @@ const TypeList = ({ setLikeStatus }) => {
 };
 
 const TypeStyled = styled(motion.div)`
-  padding: 1rem 0;
+  padding: 1rem;
   justify-content: center;
+  background: #000;
 
   ul {
-    height: 12vh;
+    height: 13vh;
     display: flex;
     overflow-x: scroll;
     flex-wrap: nowrap;
+    align-items: center;
     &::-webkit-scrollbar {
       display: none;
     }
@@ -61,20 +62,23 @@ const TypeStyled = styled(motion.div)`
   .active {
     font-size: 20px;
     background: ${(props) => props.activeColor};
+    color: #000;
   }
 `;
 const PokemonStyled = styled(motion.div)`
   list-style-type: none;
-  margin-left: 1rem;
-  border: solid 3px ${(props) => props.color};
-  padding: 1rem;
+  margin-left: 0.5rem;
+  padding: 0.2rem 0;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
-  flex: 1 0 100px;
+  flex: 1 0 5rem;
+  border-radius: 50%;
+  height: 5rem;
   font-weight: bold;
+  color: #fff;
 `;
 
 export default TypeList;

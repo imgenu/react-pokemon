@@ -10,7 +10,7 @@ import { dataList } from "../util";
 const Pokemon = ({ favoriteList, pokemon }) => {
   const dispatch = useDispatch();
   const { name, image, isFavorite, types } = pokemon;
-  console.log(pokemon);
+
   return (
     <PokemonStyled>
       <div onClick={() => dispatch(toggleFavorite(favoriteList, pokemon))}>
@@ -43,7 +43,7 @@ const PokemonStyled = styled(motion.div)`
   box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
   border-radius: 1rem;
   padding: 0rem 1rem 1rem 1rem;
-
+  background: #fff;
   margin: 1rem;
   display: flex;
   flex-direction: column;

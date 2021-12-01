@@ -1,7 +1,7 @@
 const initialState = {
   types: [],
   pokemons: [],
-  favorite: [],
+  favorite: JSON.parse(localStorage.getItem("favorite")) || [],
   isLoading: true,
 };
 

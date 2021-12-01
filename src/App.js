@@ -1,8 +1,9 @@
-import { loadType } from "./actions/typesAction";
 import GlobalStyled from "./components/GlobalStyles";
+import { useSelector } from "react-redux";
+
 import Home from "./pages/Home";
 function App() {
-  loadType();
+  const { isLoading } = useSelector((state) => state.types);
   return (
     <div className="App">
       <GlobalStyled />

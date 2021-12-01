@@ -44,33 +44,29 @@ const loadPokemons = async (pokemonType) => {
   );
   return pokemons;
 };
+export const getInitailData = () => async (dispatch) => {};
 export const loadType = () => async (dispatch) => {
   const typesData = await axios.get(allTypesURL());
   const defaultType = typesData.data.results[0].name;
   const selectedTypeData = await axios.get(selectedTypeUrl(defaultType));
   const pokemons = await loadPokemons(selectedTypeData);
+
   dispatch({
     type: "FETCH_TYPE",
     payload: {
       types: typesData.data.results,
       pokemons: pokemons,
-      //   pokemons: selectedTypeData.data.pokemon,
     },
   });
+
+  if (JSON.parse(localStorage.getItem("favorite"))) {
+    dispatch(
+      mapPokemonFavorite(pokemons, JSON.parse(localStorage.getItem("favorite")))
+    );
+  }
 };
 export const mapPokemonFavorite = (pokemonList, favoriteList) => (dispatch) => {
-  //   console.log(favoriteList);
   if (favoriteList.length === 0) return;
-  //   const favorites = favoriteList.map((favorite) => {
-  //     pokemonList.filter((pokemon) => favorite.id === pokemon.id);
-  //   });
-  //   return [{ ...pokemonList, ...favorites }];
-
-  let pokemons = favoriteList.map((fav) => {
-    return pokemonList.map((pokemon, index) => {
-      return pokemon.id === fav.id ? { ...pokemon, ...fav } : { ...pokemon };
-    });
-  });
 
   let pokemon = favoriteList.reduce(
     (prev, cur) => {
@@ -79,7 +75,7 @@ export const mapPokemonFavorite = (pokemonList, favoriteList) => (dispatch) => {
       if (target) {
         Object.assign(target, cur);
       } else {
-        prev.push(cur);
+        // prev.push(cur);
       }
       return prev;
     },
@@ -91,6 +87,7 @@ export const mapPokemonFavorite = (pokemonList, favoriteList) => (dispatch) => {
       pokemons: pokemon,
     },
   });
+  // localStorage.setItem("pokemons", JSON.stringify(pokemon));
 };
 export const loadSelectdType =
   (type_name, favoriteList) => async (dispatch) => {
@@ -106,6 +103,7 @@ export const loadSelectdType =
         pokemons: pokemons,
       },
     });
+
     if (favoriteList.length > 0) {
       dispatch(mapPokemonFavorite(pokemons, favoriteList));
     }
@@ -130,4 +128,5 @@ export const toggleFavorite = (favoriteList, pokemon) => async (dispatch) => {
       favorite: list,
     },
   });
+  localStorage.setItem("favorite", JSON.stringify(list));
 };
